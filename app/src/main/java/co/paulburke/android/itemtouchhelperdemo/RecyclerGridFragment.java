@@ -49,7 +49,7 @@ public class RecyclerGridFragment extends Fragment implements OnStartDragListene
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), this);
+        final RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(),null, this);
 
         RecyclerView recyclerView = (RecyclerView) view;
         recyclerView.setHasFixedSize(true);

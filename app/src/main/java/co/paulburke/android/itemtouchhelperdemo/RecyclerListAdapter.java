@@ -28,13 +28,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import co.paulburke.android.itemtouchhelperdemo.helper.ItemTouchHelperAdapter;
 import co.paulburke.android.itemtouchhelperdemo.helper.ItemTouchHelperViewHolder;
 import co.paulburke.android.itemtouchhelperdemo.helper.OnStartDragListener;
+import co.paulburke.android.itemtouchhelperdemo.tree.MainWorkNode;
 
 /**
  * Simple RecyclerView.Adapter that implements {@link ItemTouchHelperAdapter} to respond to move and
@@ -45,13 +45,15 @@ import co.paulburke.android.itemtouchhelperdemo.helper.OnStartDragListener;
 public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ItemViewHolder>
         implements ItemTouchHelperAdapter {
 
-    private final List<String> mItems = new ArrayList<>();
+    private final List<MainWorkNode> mItems = new ArrayList<>();
 
     private final OnStartDragListener mDragStartListener;
 
-    public RecyclerListAdapter(Context context, OnStartDragListener dragStartListener) {
+    public RecyclerListAdapter(Context context, List<MainWorkNode> mainWorkNodeList, OnStartDragListener dragStartListener) {
+
         mDragStartListener = dragStartListener;
-        mItems.addAll(Arrays.asList(context.getResources().getStringArray(R.array.dummy_items)));
+        mItems.addAll(mainWorkNodeList);
+        //        mItems.addAll(Arrays.asList(context.getResources().getStringArray(R.array.dummy_items)));
     }
 
     @Override
@@ -63,7 +65,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, int position) {
-        holder.textView.setText(mItems.get(position));
+        holder.textView.setText(mItems.get(position).getTitle());
 
         // Start a drag whenever the handle view it touched
         holder.handleView.setOnTouchListener(new View.OnTouchListener() {
@@ -107,7 +109,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
         public ItemViewHolder(View itemView) {
             super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.text);
+            textView = (TextView) itemView.findViewById(R.id.title);
             handleView = (ImageView) itemView.findViewById(R.id.handle);
         }
 
