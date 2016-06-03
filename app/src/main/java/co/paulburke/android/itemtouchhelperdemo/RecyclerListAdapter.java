@@ -34,7 +34,7 @@ import java.util.List;
 import co.paulburke.android.itemtouchhelperdemo.helper.ItemTouchHelperAdapter;
 import co.paulburke.android.itemtouchhelperdemo.helper.ItemTouchHelperViewHolder;
 import co.paulburke.android.itemtouchhelperdemo.helper.OnStartDragListener;
-import co.paulburke.android.itemtouchhelperdemo.tree.MainWorkNode;
+import co.paulburke.android.itemtouchhelperdemo.tree.MainWorkManyTreeNode;
 
 /**
  * Simple RecyclerView.Adapter that implements {@link ItemTouchHelperAdapter} to respond to move and
@@ -45,11 +45,11 @@ import co.paulburke.android.itemtouchhelperdemo.tree.MainWorkNode;
 public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ItemViewHolder>
         implements ItemTouchHelperAdapter {
 
-    private final List<MainWorkNode> mItems = new ArrayList<>();
+    private final List<MainWorkManyTreeNode> mItems = new ArrayList<>();
 
     private final OnStartDragListener mDragStartListener;
 
-    public RecyclerListAdapter(Context context, List<MainWorkNode> mainWorkNodeList, OnStartDragListener dragStartListener) {
+    public RecyclerListAdapter(Context context, List<MainWorkManyTreeNode> mainWorkNodeList, OnStartDragListener dragStartListener) {
 
         mDragStartListener = dragStartListener;
         mItems.addAll(mainWorkNodeList);
@@ -65,10 +65,10 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, int position) {
-        holder.textView.setText(mItems.get(position).getTitle());
+        holder.textView.setText(mItems.get(position).getData().getTitle());
 
-        holder.textView.setPadding(mItems.get(position).getLevel() *40, 0, 0, 0);
-        // Start a drag whenever the handle view it touched
+        holder.textView.setPadding(mItems.get(position).getLevel() * 40, 0, 0, 0);
+        //         Start a drag whenever the handle view it touched
         holder.handleView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -100,7 +100,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         return 0;
     }
 
-    public MainWorkNode getItem(int position) {
+    public MainWorkManyTreeNode getItem(int position) {
         if (mItems != null)
             return mItems.get(position);
         return null;

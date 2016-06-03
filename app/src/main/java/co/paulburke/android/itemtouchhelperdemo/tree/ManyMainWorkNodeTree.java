@@ -12,13 +12,13 @@ public class ManyMainWorkNodeTree {
     /**
      * 树根
      */
-    private MainWorkNode root;
+    private MainWorkManyTreeNode root;
 
     /**
      * 构造函数
      */
     public ManyMainWorkNodeTree() {
-        root = new MainWorkNode(ROOT_NODE);
+        root = new MainWorkManyTreeNode(new MainWorkNode(ROOT_NODE));
     }
 
     /**
@@ -32,11 +32,12 @@ public class ManyMainWorkNodeTree {
             return null;
 
         ManyMainWorkNodeTree manyMainWorkNodeTree = new ManyMainWorkNodeTree();
+
         //将所有节点添加到多叉树中
         for (MainWorkNode mainWorkNode : mainWorkNodes) {
             if (mainWorkNode.getParentId() == 0) {
                 //向根添加一个节点
-                manyMainWorkNodeTree.getRoot().getChildList().add(mainWorkNode);
+                manyMainWorkNodeTree.getRoot().getChildList().add(new MainWorkManyTreeNode(mainWorkNode));
             } else {
                 addChild(manyMainWorkNodeTree.getRoot(), mainWorkNode);
             }
@@ -48,18 +49,14 @@ public class ManyMainWorkNodeTree {
     /**
      * 向指定多叉树节点添加子节点
      *
-     * @param mainWorkManyTreeNode 多叉树节点
+     * @param manyMainWorkTreeNode 多叉树节点
      * @param child                节点
      */
-    public void addChild(MainWorkNode mainWorkManyTreeNode, MainWorkNode child) {
-        for (MainWorkNode item : mainWorkManyTreeNode.getChildList()) {
-            if (item.getId() == child.getParentId()) {
+    public void addChild(MainWorkManyTreeNode manyMainWorkTreeNode, MainWorkNode child) {
+        for (MainWorkManyTreeNode item : manyMainWorkTreeNode.getChildList()) {
+            if (item.getData().getId() == child.getParentId()) {
                 //找到对应的父亲
-                if (!item.getChildList().contains(child)) {
-                    child.setLevel(item.getLevel() + 1);
-                    item.getChildList().add(child);
-                }
-
+                item.getChildList().add(new MainWorkManyTreeNode(child));
                 break;
             } else {
                 if (item.getChildList() != null && item.getChildList().size() > 0) {
@@ -72,16 +69,16 @@ public class ManyMainWorkNodeTree {
     /**
      * 遍历多叉树
      *
-     * @param mainWorkManyTreeNode 多叉树节点
+     * @param manyMainWorkTreeNode 多叉树节点
      * @return
      */
-    public String iteratorTree(MainWorkNode mainWorkManyTreeNode) {
+    public String iteratorTree(MainWorkManyTreeNode manyMainWorkTreeNode) {
         StringBuilder buffer = new StringBuilder();
         buffer.append("\n");
 
-        if (mainWorkManyTreeNode != null) {
-            for (MainWorkNode index : mainWorkManyTreeNode.getChildList()) {
-                buffer.append(index.getId() + ",");
+        if (manyMainWorkTreeNode != null) {
+            for (MainWorkManyTreeNode index : manyMainWorkTreeNode.getChildList()) {
+                buffer.append(index.getData().getId() + ",");
 
                 if (index.getChildList() != null && index.getChildList().size() > 0) {
                     buffer.append(iteratorTree(index));
@@ -94,27 +91,51 @@ public class ManyMainWorkNodeTree {
         return buffer.toString();
     }
 
-    public List<MainWorkNode> iteratorTreeToList(MainWorkNode mainWorkManyTreeNode) {
+    public List<MainWorkNode> iteratorTreeToList(MainWorkManyTreeNode manyMainWorkTreeNode) {
         List<MainWorkNode> buffer = new ArrayList<>();
-        if (mainWorkManyTreeNode != null) {
-            for (MainWorkNode index : mainWorkManyTreeNode.getChildList()) {
-                if (!buffer.contains(index))
-                    buffer.add(index);
+
+        if (manyMainWorkTreeNode != null) {
+            for (MainWorkManyTreeNode index : manyMainWorkTreeNode.getChildList()) {
+                index.setLevel(manyMainWorkTreeNode.getLevel() + 1);
+                buffer.add(index.getData());
+
                 if (index.getChildList() != null && index.getChildList().size() > 0) {
                     buffer.addAll(iteratorTreeToList(index));
                 }
-
             }
         }
+
+
         return buffer;
     }
 
 
-    public MainWorkNode getRoot() {
+    public List<MainWorkManyTreeNode> iteratorTreeToManyList(MainWorkManyTreeNode manyMainWorkTreeNode) {
+        List<MainWorkManyTreeNode> buffer = new ArrayList<>();
+
+        if (manyMainWorkTreeNode != null) {
+            for (MainWorkManyTreeNode index : manyMainWorkTreeNode.getChildList()) {
+                index.setLevel(manyMainWorkTreeNode.getLevel() + 1);
+                buffer.add(index);
+
+                if (index.getChildList() != null && index.getChildList().size() > 0) {
+                    buffer.addAll(iteratorTreeToManyList(index));
+                }
+            }
+        }
+
+
+        return buffer;
+    }
+
+
+
+
+    public MainWorkManyTreeNode getRoot() {
         return root;
     }
 
-    public void setRoot(MainWorkNode root) {
+    public void setRoot(MainWorkManyTreeNode root) {
         this.root = root;
     }
 
