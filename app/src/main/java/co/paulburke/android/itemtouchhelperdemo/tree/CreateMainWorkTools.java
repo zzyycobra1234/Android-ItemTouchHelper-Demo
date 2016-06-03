@@ -29,6 +29,11 @@ public class CreateMainWorkTools {
         treeNodes.add(new MainWorkNode(10033L, 10003L, "设计 sub3"));
 
 
+        treeNodes.add(new MainWorkNode(15031L, 10002L, "设计 sub1 "));
+        treeNodes.add(new MainWorkNode(10532L, 10001L, "设计 sub2"));
+        treeNodes.add(new MainWorkNode(10043L, 0, "4级"));
+
+
         ManyMainWorkNodeTree tree = new ManyMainWorkNodeTree();
         System.out.println(tree.iteratorTree(tree.createTree(treeNodes).getRoot()));
 

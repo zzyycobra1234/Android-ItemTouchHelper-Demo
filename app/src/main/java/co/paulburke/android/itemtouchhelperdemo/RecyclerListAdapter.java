@@ -18,13 +18,12 @@ package co.paulburke.android.itemtouchhelperdemo;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -45,7 +44,10 @@ import co.paulburke.android.itemtouchhelperdemo.tree.MainWorkManyTreeNode;
 public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ItemViewHolder>
         implements ItemTouchHelperAdapter {
 
+    // 用作显示
     private final List<MainWorkManyTreeNode> mItems = new ArrayList<>();
+    // 用作存储数据
+    private final List<MainWorkManyTreeNode> mOrginItems = new ArrayList<>();
 
     private final OnStartDragListener mDragStartListener;
 
@@ -53,6 +55,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
         mDragStartListener = dragStartListener;
         mItems.addAll(mainWorkNodeList);
+        mOrginItems.addAll(mainWorkNodeList);
         //        mItems.addAll(Arrays.asList(context.getResources().getStringArray(R.array.dummy_items)));
     }
 
@@ -65,20 +68,45 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, int position) {
-        holder.textView.setText(mItems.get(position).getData().getTitle());
+        MainWorkManyTreeNode proMainWorkManyTreeNode = null;
+        if (position - 1 >= 0)
+            proMainWorkManyTreeNode = mItems.get(position - 1);
+        MainWorkManyTreeNode curMainWorkManyTreeNode = mItems.get(position);
 
-        holder.textView.setPadding(mItems.get(position).getLevel() * 40, 0, 0, 0);
+        holder.textView.setText(curMainWorkManyTreeNode.getData().getTitle());
+
+        holder.mLinearLayout.setPadding((curMainWorkManyTreeNode.getLevel() - 1) * 40, 0, 0, 0);
         //         Start a drag whenever the handle view it touched
-        holder.handleView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-                    mDragStartListener.onStartDrag(holder);
-                }
-                return false;
-            }
-        });
+        // 没有子集,而且当前的第一位
+        if ((curMainWorkManyTreeNode.getChildList() == null || curMainWorkManyTreeNode.getChildList().isEmpty())
+                && (proMainWorkManyTreeNode != null && proMainWorkManyTreeNode.getLevel() < curMainWorkManyTreeNode.getLevel())) {
+            holder.icon.setImageResource(R.drawable.icon_gongzuojianyou_xian);
+        }
+        // 没有子集
+        else if (curMainWorkManyTreeNode.getChildList() == null || curMainWorkManyTreeNode.getChildList().isEmpty()) {
+            holder.icon.setImageResource(R.drawable.btn_hebingziji);
+        }
+        // 有子集 且是膨胀的
+        else if (curMainWorkManyTreeNode.getChildList() != null && !curMainWorkManyTreeNode.getChildList().isEmpty() && curMainWorkManyTreeNode.isExpand())
+            holder.icon.setImageResource(R.drawable.icon_gongzuojianyou_lan);
+            // 有子集 且是非膨胀的
+        else if (curMainWorkManyTreeNode.getChildList() != null && !curMainWorkManyTreeNode.getChildList().isEmpty() && !curMainWorkManyTreeNode.isExpand())
+            holder.icon.setImageResource(R.drawable.icon_gongzuojianyou);
+
+
+        //        holder.handleView.setOnTouchListener(new View.OnTouchListener() {
+        //            @Override
+        //            public boolean onTouch(View v, MotionEvent event) {
+        //                if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+        //                    mDragStartListener.onStartDrag(holder);
+        //                }
+        //                return false;
+        //            }
+        //        });
+
+
     }
+
 
     @Override
     public void onItemDismiss(int position) {
@@ -107,25 +135,21 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     }
 
 
-    //    @Override
-    //    public int getItemViewType(int position) {
-    //        return getItem(position).getLevel();
-    //    }
-
     /**
      * Simple example of a view holder that implements {@link ItemTouchHelperViewHolder} and has a
      * "handle" view that initiates a drag event when touched.
      */
     public static class ItemViewHolder extends RecyclerView.ViewHolder implements
             ItemTouchHelperViewHolder {
-
+        public final LinearLayout mLinearLayout;
         public final TextView textView;
-        public final ImageView handleView;
+        public final ImageView icon;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
+            mLinearLayout = (LinearLayout) itemView.findViewById(R.id.item);
             textView = (TextView) itemView.findViewById(R.id.title);
-            handleView = (ImageView) itemView.findViewById(R.id.handle);
+            icon = (ImageView) itemView.findViewById(R.id.iv_icon);
         }
 
         @Override
