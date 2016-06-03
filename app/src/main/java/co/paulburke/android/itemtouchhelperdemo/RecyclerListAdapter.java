@@ -67,22 +67,22 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     }
 
     @Override
-    public void onBindViewHolder(final ItemViewHolder holder, int position) {
+    public void onBindViewHolder(final ItemViewHolder holder, final int position) {
         MainWorkManyTreeNode proMainWorkManyTreeNode = null;
         if (position - 1 >= 0)
             proMainWorkManyTreeNode = mItems.get(position - 1);
-        MainWorkManyTreeNode curMainWorkManyTreeNode = mItems.get(position);
+        final MainWorkManyTreeNode curMainWorkManyTreeNode = mItems.get(position);
 
         holder.textView.setText(curMainWorkManyTreeNode.getData().getTitle());
 
         holder.mLinearLayout.setPadding((curMainWorkManyTreeNode.getLevel() - 1) * 40, 0, 0, 0);
         //         Start a drag whenever the handle view it touched
-        // 没有子集,而且当前的第一位
+        // 没有子集
         if ((curMainWorkManyTreeNode.getChildList() == null || curMainWorkManyTreeNode.getChildList().isEmpty())
                 && (proMainWorkManyTreeNode != null && proMainWorkManyTreeNode.getLevel() < curMainWorkManyTreeNode.getLevel())) {
             holder.icon.setImageResource(R.drawable.icon_gongzuojianyou_xian);
         }
-        // 没有子集
+        // 没有子集 ,而且不是当前的第一位
         else if (curMainWorkManyTreeNode.getChildList() == null || curMainWorkManyTreeNode.getChildList().isEmpty()) {
             holder.icon.setImageResource(R.drawable.btn_hebingziji);
         }
@@ -90,9 +90,26 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         else if (curMainWorkManyTreeNode.getChildList() != null && !curMainWorkManyTreeNode.getChildList().isEmpty() && curMainWorkManyTreeNode.isExpand())
             holder.icon.setImageResource(R.drawable.icon_gongzuojianyou_lan);
             // 有子集 且是非膨胀的
-        else if (curMainWorkManyTreeNode.getChildList() != null && !curMainWorkManyTreeNode.getChildList().isEmpty() && !curMainWorkManyTreeNode.isExpand())
+        else if (curMainWorkManyTreeNode.getChildList() != null && !curMainWorkManyTreeNode.getChildList().isEmpty() && !curMainWorkManyTreeNode.isExpand()) {
             holder.icon.setImageResource(R.drawable.icon_gongzuojianyou);
+        }
 
+        holder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (curMainWorkManyTreeNode.getChildList() != null && !curMainWorkManyTreeNode.getChildList().isEmpty()) {
+                    curMainWorkManyTreeNode.setExpand(!curMainWorkManyTreeNode.isExpand());
+
+                    if (curMainWorkManyTreeNode.isExpand())
+                        mItems.addAll(position+1, curMainWorkManyTreeNode.getChildList());
+                    else
+                        mItems.removeAll(curMainWorkManyTreeNode.getChildList());
+                notifyDataSetChanged();
+                }
+
+
+            }
+        });
 
         //        holder.handleView.setOnTouchListener(new View.OnTouchListener() {
         //            @Override
