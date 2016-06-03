@@ -94,8 +94,22 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     @Override
     public int getItemCount() {
-        return mItems.size();
+        if (mItems != null)
+            return mItems.size();
+        return 0;
     }
+
+    public MainWorkNode getItem(int position) {
+        if (mItems != null)
+            return mItems.get(position);
+        return null;
+    }
+
+
+//    @Override
+//    public int getItemViewType(int position) {
+//        return getItem(position).getLevel();
+//    }
 
     /**
      * Simple example of a view holder that implements {@link ItemTouchHelperViewHolder} and has a
