@@ -55,8 +55,11 @@ public class ManyMainWorkNodeTree {
         for (MainWorkNode item : mainWorkManyTreeNode.getChildList()) {
             if (item.getId() == child.getParentId()) {
                 //找到对应的父亲
-                if (!item.getChildList().contains(child))
+                if (!item.getChildList().contains(child)) {
+                    child.setLevel(item.getLevel() + 1);
                     item.getChildList().add(child);
+                }
+
                 break;
             } else {
                 if (item.getChildList() != null && item.getChildList().size() > 0) {
@@ -93,19 +96,16 @@ public class ManyMainWorkNodeTree {
 
     public List<MainWorkNode> iteratorTreeToList(MainWorkNode mainWorkManyTreeNode) {
         List<MainWorkNode> buffer = new ArrayList<>();
-
         if (mainWorkManyTreeNode != null) {
             for (MainWorkNode index : mainWorkManyTreeNode.getChildList()) {
                 if (!buffer.contains(index))
                     buffer.add(index);
-
                 if (index.getChildList() != null && index.getChildList().size() > 0) {
                     buffer.addAll(iteratorTreeToList(index));
                 }
+
             }
         }
-
-
         return buffer;
     }
 

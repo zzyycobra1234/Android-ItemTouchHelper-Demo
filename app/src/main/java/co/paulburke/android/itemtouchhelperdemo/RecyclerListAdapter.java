@@ -67,6 +67,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     public void onBindViewHolder(final ItemViewHolder holder, int position) {
         holder.textView.setText(mItems.get(position).getTitle());
 
+        holder.textView.setPadding(mItems.get(position).getLevel() *40, 0, 0, 0);
         // Start a drag whenever the handle view it touched
         holder.handleView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -106,10 +107,10 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     }
 
 
-//    @Override
-//    public int getItemViewType(int position) {
-//        return getItem(position).getLevel();
-//    }
+    //    @Override
+    //    public int getItemViewType(int position) {
+    //        return getItem(position).getLevel();
+    //    }
 
     /**
      * Simple example of a view holder that implements {@link ItemTouchHelperViewHolder} and has a

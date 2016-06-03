@@ -23,7 +23,7 @@ public class CreateMainWorkTools {
         treeNodes.add(new MainWorkNode(10021L, 10002L, "IOs sub1 "));
         treeNodes.add(new MainWorkNode(10022L, 10002L, "IOs sub1 "));
         treeNodes.add(new MainWorkNode(10023L, 10002L, "IOs sub1 "));
-//
+
         treeNodes.add(new MainWorkNode(10031L, 10003L, "设计 sub1 "));
         treeNodes.add(new MainWorkNode(10032L, 10003L, "设计 sub2"));
         treeNodes.add(new MainWorkNode(10036L, 10003L, "设计 sub3"));
@@ -37,7 +37,7 @@ public class CreateMainWorkTools {
         treeNodes.add(new MainWorkNode(10019L, 10001L, "android sub8 "));
 
         ManyMainWorkNodeTree tree = new ManyMainWorkNodeTree();
-        System.out.println(tree.iteratorTree(tree.createTree(treeNodes).getRoot()));
+//        System.out.println(tree.iteratorTree(tree.createTree(treeNodes).getRoot()));
 
         return tree.iteratorTreeToList(tree.createTree(treeNodes).getRoot());
 
