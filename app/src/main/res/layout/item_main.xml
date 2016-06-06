@@ -22,20 +22,18 @@
               android:foreground="?selectableItemBackground"
               android:weightSum="1">
 
-    <!--<ImageView-->
-        <!--android:background="#6b6b6b"-->
-        <!--android:id="@+id/iv_icon"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:padding="5dp"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_gravity="left|center_vertical"-->
-        <!--android:scaleType="center"-->
-        <!--android:src="@drawable/icon_gongzuojianyou_lan"-->
-        <!--/>-->
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="left|center_vertical"
+        android:padding="5dp"
+        android:scaleType="center"
+        android:src="@drawable/icon_gongzuojianyou_xian"
+        />
 
     <TextView
         android:id="@+id/title"
-        android:paddingLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="?listPreferredItemHeight"
         android:layout_gravity="center"

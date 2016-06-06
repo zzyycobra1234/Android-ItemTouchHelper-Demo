@@ -74,17 +74,12 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         final MainWorkManyTreeNode curMainWorkManyTreeNode = mItems.get(position);
 
         holder.textView.setText(curMainWorkManyTreeNode.getData().getTitle());
-
-        holder.mLinearLayout.setPadding((curMainWorkManyTreeNode.getLevel() - 1) * 40, 0, 0, 0);
+//
         //         Start a drag whenever the handle view it touched
         // 没有子集
         if ((curMainWorkManyTreeNode.getChildList() == null || curMainWorkManyTreeNode.getChildList().isEmpty())
-                && (proMainWorkManyTreeNode != null && proMainWorkManyTreeNode.getLevel() < curMainWorkManyTreeNode.getLevel())) {
+       ) {
             holder.icon.setImageResource(R.drawable.icon_gongzuojianyou_xian);
-        }
-        // 没有子集 ,而且不是当前的第一位
-        else if (curMainWorkManyTreeNode.getChildList() == null || curMainWorkManyTreeNode.getChildList().isEmpty()) {
-            holder.icon.setImageResource(R.drawable.btn_hebingziji);
         }
         // 有子集 且是膨胀的
         else if (curMainWorkManyTreeNode.getChildList() != null && !curMainWorkManyTreeNode.getChildList().isEmpty() && curMainWorkManyTreeNode.isExpand()) {
@@ -132,6 +127,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
             return;
         mItems.removeAll(node.getChildList());
         for (int i = 0; i < node.getChildList().size(); i++) {
+            node.setExpand(false);
             removeChilds(node.getChildList().get(i));
         }
     }

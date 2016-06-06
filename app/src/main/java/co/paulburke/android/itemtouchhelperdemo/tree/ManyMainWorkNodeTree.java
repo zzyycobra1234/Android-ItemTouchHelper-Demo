@@ -14,12 +14,23 @@ public class ManyMainWorkNodeTree {
      */
     private MainWorkManyTreeNode root;
 
+    private boolean isExpand;
+
+    public boolean isExpand() {
+        return isExpand;
+    }
+
+    public void setExpand(boolean expand) {
+        isExpand = expand;
+    }
+
     /**
      * 构造函数
      */
     public ManyMainWorkNodeTree() {
         root = new MainWorkManyTreeNode(new MainWorkNode(ROOT_NODE));
     }
+
 
     /**
      * 生成一颗多叉树，根节点为root
@@ -37,7 +48,9 @@ public class ManyMainWorkNodeTree {
         for (MainWorkNode mainWorkNode : mainWorkNodes) {
             if (mainWorkNode.getParentId() == 0) {
                 //向根添加一个节点
-                manyMainWorkNodeTree.getRoot().getChildList().add(new MainWorkManyTreeNode(mainWorkNode));
+                MainWorkManyTreeNode temp = new MainWorkManyTreeNode(mainWorkNode);
+                temp.setExpand(this.isExpand());
+                manyMainWorkNodeTree.getRoot().getChildList().add(temp);
             } else {
                 addChild(manyMainWorkNodeTree.getRoot(), mainWorkNode);
             }
@@ -56,7 +69,9 @@ public class ManyMainWorkNodeTree {
         for (MainWorkManyTreeNode item : manyMainWorkTreeNode.getChildList()) {
             if (item.getData().getId() == child.getParentId()) {
                 //找到对应的父亲
-                item.getChildList().add(new MainWorkManyTreeNode(child));
+                MainWorkManyTreeNode temp = new MainWorkManyTreeNode(child);
+                temp.setExpand(this.isExpand());
+                item.getChildList().add(temp);
                 break;
             } else {
                 if (item.getChildList() != null && item.getChildList().size() > 0) {
@@ -109,7 +124,9 @@ public class ManyMainWorkNodeTree {
         return buffer;
     }
 
-
+    /**
+     * 将所有的树节点加入到List中
+     */
     public List<MainWorkManyTreeNode> iteratorTreeToManyList(MainWorkManyTreeNode manyMainWorkTreeNode) {
         List<MainWorkManyTreeNode> buffer = new ArrayList<>();
 
@@ -128,7 +145,19 @@ public class ManyMainWorkNodeTree {
         return buffer;
     }
 
-
+    /**
+     * 只是根节点加入到列表中
+     *
+     * @param manyMainWorkTreeNode
+     * @return
+     */
+    public List<MainWorkManyTreeNode> iteratorTreeToRootChildList(MainWorkManyTreeNode manyMainWorkTreeNode) {
+        List<MainWorkManyTreeNode> buffer = new ArrayList<>();
+        if (manyMainWorkTreeNode != null) {
+            buffer.addAll(manyMainWorkTreeNode.getChildList());
+        }
+        return buffer;
+    }
 
 
     public MainWorkManyTreeNode getRoot() {
