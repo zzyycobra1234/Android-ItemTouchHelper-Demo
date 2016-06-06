@@ -60,8 +60,24 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return getItem(position).getLevel();
+    }
+
+    @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main, parent, false);;
+//        if (viewType == 0) {
+//            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main, parent, false);
+//        } else if (viewType == 1) {
+//            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main1, parent, false);
+//        } else if (viewType == 2) {
+//            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main2, parent, false);
+//        } else if (viewType == 3) {
+//            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main3, parent, false);
+//        } else if (viewType == 4) {
+//            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main4, parent, false);
+//        }
         ItemViewHolder itemViewHolder = new ItemViewHolder(view);
         return itemViewHolder;
     }
@@ -74,11 +90,12 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         final MainWorkManyTreeNode curMainWorkManyTreeNode = mItems.get(position);
 
         holder.textView.setText(curMainWorkManyTreeNode.getData().getTitle());
-//
+
+        holder.mLinearLayout.setPadding((curMainWorkManyTreeNode.getLevel() - 1) * 40, 0, 0, 0);
         //         Start a drag whenever the handle view it touched
         // 没有子集
         if ((curMainWorkManyTreeNode.getChildList() == null || curMainWorkManyTreeNode.getChildList().isEmpty())
-       ) {
+                ) {
             holder.icon.setImageResource(R.drawable.icon_gongzuojianyou_xian);
         }
         // 有子集 且是膨胀的
@@ -109,19 +126,13 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
             }
         });
 
-
-        holder.icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 没有子集 ,而且不是当前的第一位  成为兄弟的子集
-                if (curMainWorkManyTreeNode.getChildList() == null || curMainWorkManyTreeNode.getChildList().isEmpty()) {
-                    //
-                }
-            }
-        });
-
     }
 
+    /**
+     * 递归方法移除所有的儿子孙子
+     *
+     * @param node
+     */
     private void removeChilds(MainWorkManyTreeNode node) {
         if (node.getChildList() == null)
             return;

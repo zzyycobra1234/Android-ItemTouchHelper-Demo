@@ -156,6 +156,19 @@ public class ManyMainWorkNodeTree {
         if (manyMainWorkTreeNode != null) {
             buffer.addAll(manyMainWorkTreeNode.getChildList());
         }
+
+        // 设置Level
+        if (manyMainWorkTreeNode != null) {
+            for (MainWorkManyTreeNode index : manyMainWorkTreeNode.getChildList()) {
+                index.setLevel(manyMainWorkTreeNode.getLevel() + 1);
+
+                if (index.getChildList() != null && index.getChildList().size() > 0) {
+                    iteratorTreeToManyList(index);
+                }
+            }
+        }
+
+
         return buffer;
     }
 
