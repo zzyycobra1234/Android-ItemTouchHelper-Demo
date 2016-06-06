@@ -40,7 +40,7 @@ public class CreateMainWorkTools {
 
         ManyMainWorkNodeTree tree = new ManyMainWorkNodeTree();
         tree.setExpand(false);
-        System.out.println(tree.iteratorTree(tree.createTree(treeNodes).getRoot()));
+//        System.out.println(tree.iteratorTree(tree.createTree(treeNodes).getRoot()));
 
         return tree.iteratorTreeToRootChildList(tree.createTree(treeNodes).getRoot());
 

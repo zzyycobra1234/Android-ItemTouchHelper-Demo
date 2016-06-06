@@ -20,10 +20,6 @@ public class MainWorkNode {
      * 文本内容
      */
     private String title;
-    /**
-     * 层级数
-     */
-    private int level;
 
 
     /**

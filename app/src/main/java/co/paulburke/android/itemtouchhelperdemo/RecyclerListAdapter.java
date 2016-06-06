@@ -19,6 +19,7 @@ package co.paulburke.android.itemtouchhelperdemo;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,44 +50,25 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     // 用作存储数据
     private final List<MainWorkManyTreeNode> mOrginItems = new ArrayList<>();
 
-    private final OnStartDragListener mDragStartListener;
+//    private final OnStartDragListener mDragStartListener;
 
     public RecyclerListAdapter(Context context, List<MainWorkManyTreeNode> mainWorkNodeList, OnStartDragListener dragStartListener) {
 
-        mDragStartListener = dragStartListener;
+//        mDragStartListener = dragStartListener;
         mItems.addAll(mainWorkNodeList);
         mOrginItems.addAll(mainWorkNodeList);
-        //        mItems.addAll(Arrays.asList(context.getResources().getStringArray(R.array.dummy_items)));
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return getItem(position).getLevel();
-    }
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main, parent, false);;
-//        if (viewType == 0) {
-//            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main, parent, false);
-//        } else if (viewType == 1) {
-//            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main1, parent, false);
-//        } else if (viewType == 2) {
-//            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main2, parent, false);
-//        } else if (viewType == 3) {
-//            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main3, parent, false);
-//        } else if (viewType == 4) {
-//            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main4, parent, false);
-//        }
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main, parent, false);
         ItemViewHolder itemViewHolder = new ItemViewHolder(view);
         return itemViewHolder;
     }
 
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, final int position) {
-        MainWorkManyTreeNode proMainWorkManyTreeNode = null;
-        if (position - 1 >= 0)
-            proMainWorkManyTreeNode = mItems.get(position - 1);
         final MainWorkManyTreeNode curMainWorkManyTreeNode = mItems.get(position);
 
         holder.textView.setText(curMainWorkManyTreeNode.getData().getTitle());
@@ -120,7 +102,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
                         removeChilds(curMainWorkManyTreeNode);
                     }
 
-
                     notifyDataSetChanged();
                 }
             }
@@ -145,8 +126,8 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     @Override
     public void onItemDismiss(int position) {
-        mItems.remove(position);
-        notifyItemRemoved(position);
+        //        mItems.remove(position);
+        //        notifyItemRemoved(position);
     }
 
     @Override
@@ -169,12 +150,14 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         return null;
     }
 
+    int fromPosition;
+    int toPosition;
 
     /**
      * Simple example of a view holder that implements {@link ItemTouchHelperViewHolder} and has a
      * "handle" view that initiates a drag event when touched.
      */
-    public static class ItemViewHolder extends RecyclerView.ViewHolder implements
+    public class ItemViewHolder extends RecyclerView.ViewHolder implements
             ItemTouchHelperViewHolder {
         public final LinearLayout mLinearLayout;
         public final TextView textView;
@@ -189,12 +172,22 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
         @Override
         public void onItemSelected() {
+            Log.e("onItemSelected   ", " onItemSelected " + this.getAdapterPosition());
             itemView.setBackgroundColor(Color.LTGRAY);
+            fromPosition = this.getAdapterPosition();
         }
 
         @Override
         public void onItemClear() {
+            Log.e("onItemSelected   ", " onItemClear " + this.getAdapterPosition());
             itemView.setBackgroundColor(0);
+            toPosition = this.getAdapterPosition();
+
+
+
+            notifyDataSetChanged();
         }
     }
+
+
 }
