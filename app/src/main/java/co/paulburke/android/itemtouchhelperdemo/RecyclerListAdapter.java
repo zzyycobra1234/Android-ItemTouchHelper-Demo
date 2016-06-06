@@ -87,9 +87,10 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
             holder.icon.setImageResource(R.drawable.btn_hebingziji);
         }
         // 有子集 且是膨胀的
-        else if (curMainWorkManyTreeNode.getChildList() != null && !curMainWorkManyTreeNode.getChildList().isEmpty() && curMainWorkManyTreeNode.isExpand())
+        else if (curMainWorkManyTreeNode.getChildList() != null && !curMainWorkManyTreeNode.getChildList().isEmpty() && curMainWorkManyTreeNode.isExpand()) {
             holder.icon.setImageResource(R.drawable.icon_gongzuojianyou_lan);
-            // 有子集 且是非膨胀的
+        }
+        // 有子集 且是非膨胀的
         else if (curMainWorkManyTreeNode.getChildList() != null && !curMainWorkManyTreeNode.getChildList().isEmpty() && !curMainWorkManyTreeNode.isExpand()) {
             holder.icon.setImageResource(R.drawable.icon_gongzuojianyou);
         }
@@ -97,33 +98,43 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         holder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //  根节点 膨胀
                 if (curMainWorkManyTreeNode.getChildList() != null && !curMainWorkManyTreeNode.getChildList().isEmpty()) {
                     curMainWorkManyTreeNode.setExpand(!curMainWorkManyTreeNode.isExpand());
 
                     if (curMainWorkManyTreeNode.isExpand())
-                        mItems.addAll(position+1, curMainWorkManyTreeNode.getChildList());
-                    else
-                        mItems.removeAll(curMainWorkManyTreeNode.getChildList());
-                notifyDataSetChanged();
+                        mItems.addAll(position + 1, curMainWorkManyTreeNode.getChildList());
+                    else {
+                        removeChilds(curMainWorkManyTreeNode);
+                    }
+
+
+                    notifyDataSetChanged();
                 }
-
-
             }
         });
 
-        //        holder.handleView.setOnTouchListener(new View.OnTouchListener() {
-        //            @Override
-        //            public boolean onTouch(View v, MotionEvent event) {
-        //                if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-        //                    mDragStartListener.onStartDrag(holder);
-        //                }
-        //                return false;
-        //            }
-        //        });
 
+        holder.icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 没有子集 ,而且不是当前的第一位  成为兄弟的子集
+                if (curMainWorkManyTreeNode.getChildList() == null || curMainWorkManyTreeNode.getChildList().isEmpty()) {
+                    //
+                }
+            }
+        });
 
     }
 
+    private void removeChilds(MainWorkManyTreeNode node) {
+        if (node.getChildList() == null)
+            return;
+        mItems.removeAll(node.getChildList());
+        for (int i = 0; i < node.getChildList().size(); i++) {
+            removeChilds(node.getChildList().get(i));
+        }
+    }
 
     @Override
     public void onItemDismiss(int position) {

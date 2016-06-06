@@ -38,7 +38,6 @@ public class MainWorkManyTreeNode {
     public MainWorkManyTreeNode(MainWorkNode data) {
         this.data = data;
         this.childList = new ArrayList<MainWorkManyTreeNode>();
-        this.isExpand = true;
     }
 
     public boolean isExpand() {

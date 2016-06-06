@@ -34,8 +34,8 @@
         <!--/>-->
 
     <TextView
+        android:paddingLeft="50dp"
         android:id="@+id/title"
-        android:paddingLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="?listPreferredItemHeight"
         android:layout_gravity="center"

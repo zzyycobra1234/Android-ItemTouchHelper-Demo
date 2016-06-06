@@ -16,9 +16,13 @@ public class CreateMainWorkTools {
         treeNodes.add(new MainWorkNode(10002L, 0, "IOs "));
         treeNodes.add(new MainWorkNode(10003L, 0, "设计 "));
 
-        treeNodes.add(new MainWorkNode(10011L, 10001L, "android sub1 "));
-        treeNodes.add(new MainWorkNode(10012L, 10001L, "android sub1 "));
-        treeNodes.add(new MainWorkNode(10013L, 10001L, "android sub1 "));
+        treeNodes.add(new MainWorkNode(10011L, 10001L, "android 2级列表 李骚骚 "));
+        treeNodes.add(new MainWorkNode(10012L, 10001L, "android 2级列表 李豆豆 "));
+        treeNodes.add(new MainWorkNode(10013L, 10001L, "android 2级列表 李小贱 "));
+
+        treeNodes.add(new MainWorkNode(10013L, 10011L, "android su22222b1 "));
+        treeNodes.add(new MainWorkNode(10013L, 10011L, "android su222b1 "));
+        treeNodes.add(new MainWorkNode(10013L, 10011L, "android sub2e13123211 "));
 
         treeNodes.add(new MainWorkNode(10021L, 10002L, "IOs sub1 "));
         treeNodes.add(new MainWorkNode(10022L, 10002L, "IOs sub1 "));
